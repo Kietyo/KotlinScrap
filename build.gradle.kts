@@ -1,7 +1,7 @@
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
-    kotlin("multiplatform") version "1.9.0"
+    kotlin("multiplatform") version "1.9.20"
 }
 
 group = "me.kietm"
@@ -14,7 +14,7 @@ repositories {
 tasks.withType<KotlinCompile> {
     kotlinOptions.freeCompilerArgs += listOf("-Xcontext-receivers")
     kotlinOptions.jvmTarget = "1.8"
-    kotlinOptions.languageVersion = "1.9"
+    kotlinOptions.languageVersion = "2.0"
 }
 
 kotlin {
@@ -50,17 +50,21 @@ kotlin {
 
     
     sourceSets {
-        val commonMain by getting
-        val commonTest by getting {
+        commonMain {
+            dependencies {
+                implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.3")
+            }
+        }
+
+        commonTest {
             dependencies {
                 implementation(kotlin("test"))
             }
         }
-        val jvmMain by getting
-        val jvmTest by getting
-        val jsMain by getting
-        val jsTest by getting
-        val nativeMain by getting
-        val nativeTest by getting
+    }
+    sourceSets.all {
+        languageSettings {
+            languageVersion = "2.0"
+        }
     }
 }
